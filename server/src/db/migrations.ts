@@ -4415,6 +4415,26 @@ function runMigrations(db: Database.Database): void {
          WHERE UPPER(country_code) = 'CN' AND region_code = 'CN-GUANGZHOUPROVINCE'`,
       ).run();
     },
+    /**
+     * Let a file hang off an expense, so a receipt or an invoice can be attached
+     * to what it paid for.
+     *
+     * A column on `file_links` rather than a table of its own: the row already
+     * ties one file to one thing, and every other attachment kind is a column
+     * here too. The unique index stops the same receipt being linked twice;
+     * SQLite treats NULLs as distinct, so the rows that exist today, which all
+     * carry a NULL here, do not collide with each other.
+     *
+     * Appended LAST: the array is index-addressed against schema_version.
+     */
+    () => {
+      const flCols = db.prepare("SELECT name FROM pragma_table_info('file_links')").all() as Array<{ name: string }>;
+      if (!flCols.some((c) => c.name === 'budget_item_id')) {
+        db.exec('ALTER TABLE file_links ADD COLUMN budget_item_id INTEGER REFERENCES budget_items(id) ON DELETE CASCADE');
+      }
+      db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_file_links_file_budget ON file_links(file_id, budget_item_id)');
+      db.exec('CREATE INDEX IF NOT EXISTS idx_file_links_budget_item_id ON file_links(budget_item_id)');
+    },
   ];
 
   if (currentVersion < migrations.length) {
