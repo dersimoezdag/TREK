@@ -204,34 +204,36 @@ export class BudgetService {
   }
 
   /**
-   * Move a receipt file to trash if it is only linked to this budget item and
-   * not referenced by any other reservation, place, or day assignment.
+   * Drop this item's receipt links, leaving the files themselves alone.
+   *
+   * The files are deliberately NOT trashed. `budget_edit` and `file_delete` are
+   * separate, separately configurable permissions, and a receipt id is any file
+   * on the trip, so trashing here would let anyone who may edit an expense
+   * delete a document they may not delete, from three surfaces that never see a
+   * file permission at all: the REST route, the MCP tool and the plugin RPC.
+   * Cleaning up a file nobody references is what the Files trash is for.
+   *
+   * A row is only removed when the receipt link was all it carried. The same
+   * row can also tie the file to a place or a booking, and those links have
+   * nothing to do with the expense. A link whose file already sits in the trash
+   * is left in place, so restoring that file brings it back attached.
    */
-  private trashOrphanReceipt(fileId: number | string, budgetItemId: number | string) {
-    const file = this.db.get<{ id: number; place_id: number | null; reservation_id: number | null }>(
-      'SELECT id, place_id, reservation_id FROM trip_files WHERE id = ? AND deleted_at IS NULL',
-      fileId,
+  private unlinkReceipts(budgetItemId: number | string, keep: ReadonlySet<number> = new Set()) {
+    const rows = this.db.all<{ id: number; file_id: number; reservation_id: number | null; assignment_id: number | null; place_id: number | null }>(
+      `SELECT fl.id, fl.file_id, fl.reservation_id, fl.assignment_id, fl.place_id
+       FROM file_links fl
+       JOIN trip_files f ON f.id = fl.file_id
+       WHERE fl.budget_item_id = ? AND f.deleted_at IS NULL`,
+      budgetItemId,
     );
-    if (!file) return;
-
-    // Check if file is tied directly to another entity via legacy columns
-    if (file.place_id || file.reservation_id) return;
-
-    // Check if file is linked via file_links to another reservation, place, assignment, or other budget item
-    const otherLinks = this.db.get<{ count: number }>(`
-      SELECT COUNT(*) as count FROM file_links
-      WHERE file_id = ? AND (
-        reservation_id IS NOT NULL OR
-        place_id IS NOT NULL OR
-        assignment_id IS NOT NULL OR
-        (budget_item_id IS NOT NULL AND budget_item_id != ?)
-      )
-    `, fileId, budgetItemId);
-
-    if (otherLinks && otherLinks.count > 0) return;
-
-    // It is an orphan receipt solely belonging to this budget item: move to trash
-    this.db.run('UPDATE trip_files SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?', fileId);
+    for (const row of rows) {
+      if (keep.has(row.file_id)) continue;
+      if (row.reservation_id || row.assignment_id || row.place_id) {
+        this.db.run('UPDATE file_links SET budget_item_id = NULL WHERE id = ?', row.id);
+      } else {
+        this.db.run('DELETE FROM file_links WHERE id = ?', row.id);
+      }
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -628,30 +630,24 @@ export class BudgetService {
       }
 
       if (data.receipt_file_ids !== undefined) {
-        // Find existing receipt file IDs for this budget item
-        const oldReceiptFiles = this.db.all<{ id: number }>(`
-          SELECT f.id FROM trip_files f
-          JOIN file_links fl ON fl.file_id = f.id
-          WHERE f.deleted_at IS NULL AND fl.budget_item_id = ?
-        `, id).map(r => r.id);
-
-        // Sync receipts: delete previous links and add new ones
-        this.db.run('DELETE FROM file_links WHERE budget_item_id = ?', id);
+        // The ids that survive are left linked rather than dropped and re-added,
+        // so a receipt the request keeps never loses its row for an instant.
+        const keep = new Set(data.receipt_file_ids.map(Number));
+        this.unlinkReceipts(id, keep);
         if (data.receipt_file_ids.length > 0) {
           const insertLink = this.db.prepare('INSERT OR IGNORE INTO file_links (file_id, budget_item_id) VALUES (?, ?)');
+          const adopt = this.db.prepare('UPDATE file_links SET budget_item_id = ? WHERE id = ?');
           for (const fid of data.receipt_file_ids) {
             const belongs = this.db.get('SELECT id FROM trip_files WHERE id = ? AND trip_id = ? AND deleted_at IS NULL', fid, tripId);
-            if (belongs) {
-              insertLink.run(fid, id);
-            }
-          }
-        }
-
-        // Any previously attached receipt that was unlinked now moves to trash if orphan
-        const newSet = new Set(data.receipt_file_ids);
-        for (const oldFid of oldReceiptFiles) {
-          if (!newSet.has(oldFid)) {
-            this.trashOrphanReceipt(oldFid, id);
+            if (!belongs) continue;
+            // A file already tied to a place or a booking gets the receipt link
+            // written onto that row, because the unique index is per file and
+            // item and a second row for the same pair would be refused anyway.
+            const spare = this.db.get<{ id: number }>(
+              'SELECT id FROM file_links WHERE file_id = ? AND budget_item_id IS NULL LIMIT 1', fid,
+            );
+            if (spare) adopt.run(id, spare.id);
+            else insertLink.run(fid, id);
           }
         }
       }
@@ -687,18 +683,12 @@ export class BudgetService {
     if (!item) return false;
     return this.db.transaction(() => {
       // Find all receipts attached to this item before deleting it
-      const receiptFiles = this.db.all<{ id: number }>(`
-        SELECT f.id FROM trip_files f
-        JOIN file_links fl ON fl.file_id = f.id
-        WHERE f.deleted_at IS NULL AND fl.budget_item_id = ?
-      `, id).map(r => r.id);
-
-      // Move exclusively attached receipts to trash
-      for (const fid of receiptFiles) {
-        this.trashOrphanReceipt(fid, id);
-      }
-
-      this.db.run('DELETE FROM file_links WHERE budget_item_id = ?', id);
+      // The receipts stay; only their tie to this expense goes. Rows that
+      // carry nothing else are removed, rows that also point at a place or a
+      // booking keep those. A link on a file already in the trash is left for
+      // the SET NULL on the foreign key, so restoring the file does not bring
+      // back a pointer to an expense that no longer exists.
+      this.unlinkReceipts(id);
       this.db.run('DELETE FROM budget_items WHERE id = ?', id);
 
       // The booking keeps a copy of this expense's total in its metadata, and

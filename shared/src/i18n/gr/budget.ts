@@ -154,5 +154,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Δεν υπάρχουν συνημμένες αποδείξεις',
   'costs.deleteReceipt': 'Αφαίρεση απόδειξης',
   'costs.viewReceipt': 'Προβολή απόδειξης',
+  'costs.receiptLeftBehind': 'Η αποθήκευση απέτυχε και {count} ανεβασμένες αποδείξεις παραμένουν. Διαγράψτε τες στην καρτέλα Αρχεία.',
 };
 export default budget;

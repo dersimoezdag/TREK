@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Nenhum comprovante anexado',
   'costs.deleteReceipt': 'Remover comprovante',
   'costs.viewReceipt': 'Ver comprovante',
+  'costs.receiptLeftBehind': 'Falha ao salvar, e {count} recibos enviados ainda estão lá. Remova-os na aba Arquivos.',
 };
 export default budget;

@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Brak załączonych paragonów',
   'costs.deleteReceipt': 'Usuń paragon',
   'costs.viewReceipt': 'Zobacz paragon',
+  'costs.receiptLeftBehind': 'Zapis nie powiódł się, a {count} przesłanych paragonów wciąż tam jest. Usuń je w zakładce Pliki.',
 };
 export default budget;

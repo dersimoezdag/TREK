@@ -152,5 +152,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': '未附加收据',
   'costs.deleteReceipt': '删除收据',
   'costs.viewReceipt': '查看收据',
+  'costs.receiptLeftBehind': '保存失败，还有 {count} 个已上传的收据。请在“文件”标签页中删除。',
 };
 export default budget;

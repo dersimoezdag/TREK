@@ -153,6 +153,7 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Chưa đính kèm hóa đơn nào',
   'costs.deleteReceipt': 'Xóa hóa đơn',
   'costs.viewReceipt': 'Xem hóa đơn',
+  'costs.receiptLeftBehind': 'Lưu thất bại và {count} biên lai đã tải lên vẫn còn. Hãy xoá chúng trong tab Tệp.',
 };
 
 export default budget;

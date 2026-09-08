@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'No hay recibos adjuntos',
   'costs.deleteReceipt': 'Eliminar recibo',
   'costs.viewReceipt': 'Ver recibo',
+  'costs.receiptLeftBehind': 'Error al guardar y quedan {count} recibos subidos. Elimínalos en la pestaña Archivos.',
 };
 export default budget;

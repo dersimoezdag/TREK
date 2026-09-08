@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Geen bonnetjes bijgevoegd',
   'costs.deleteReceipt': 'Bonnetje verwijderen',
   'costs.viewReceipt': 'Bonnetje bekijken',
+  'costs.receiptLeftBehind': 'Opslaan mislukt en er staan nog {count} geüploade bonnen. Verwijder ze op het tabblad Bestanden.',
 };
 export default budget;

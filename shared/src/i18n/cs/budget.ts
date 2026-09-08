@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Žádné připojené účtenky',
   'costs.deleteReceipt': 'Odebrat účtenku',
   'costs.viewReceipt': 'Zobrazit účtenku',
+  'costs.receiptLeftBehind': 'Uložení selhalo, {count} nahraných účtenek tam stále je. Odstraňte je v záložce Soubory.',
 };
 export default budget;

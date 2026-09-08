@@ -11,7 +11,7 @@ import { useTripStore } from '../../../../store/tripStore'
 import { useExchangeRates } from '../../../../hooks/useExchangeRates'
 import { formatMoney, localizeAmountInput, amountToInputString } from '../../../../utils/formatters'
 import { openFile } from '../../../../utils/fileDownload'
-import { filesApi } from '../../../../api/client'
+import { saveWithReceipts } from '../../../../components/Budget/receiptUploads'
 import { SYMBOLS, SPLIT_COLORS, currenciesWith } from '../../../../components/Budget/BudgetPanel.constants'
 import { COST_CATEGORY_LIST, catMeta } from '../../../../components/Budget/costsCategories'
 import { localToday } from '../../../../components/Planner/today'
@@ -291,56 +291,20 @@ export default function MCostSheet({ tripId, base, people, me, editing, prefill,
       ...(!editing && prefill?.placeId ? { place_id: prefill.placeId } : {}),
     }
     try {
-      // Upload any pending receipt files
-      const uploadedFileIds: number[] = []
-      try {
-        for (const f of pendingReceiptFiles) {
-          const fd = new FormData()
-          fd.append('file', f)
-          if (editing) {
-            fd.append('budget_item_id', String(editing.id))
-          }
-          const res = await filesApi.upload(tripId, fd)
-          if (res?.file?.id) {
-            uploadedFileIds.push(res.file.id)
-          }
-        }
-      } catch (err) {
-        for (const fid of uploadedFileIds) {
-          try { await filesApi.permanentDelete(tripId, fid) } catch {}
-        }
-        throw err
-      }
-
-      if (editing) {
-        try {
-          await updateBudgetItem(tripId, editing.id, {
-            ...data,
-            receipt_file_ids: [...receipts.map(r => r.id), ...uploadedFileIds],
-          })
-        } catch (err) {
-          for (const fid of uploadedFileIds) {
-            try { await filesApi.permanentDelete(tripId, fid) } catch {}
-          }
-          throw err
-        }
-      } else {
-        try {
-          await addBudgetItem(tripId, {
-            ...data,
-            receipt_file_ids: uploadedFileIds,
-          })
-        } catch (err) {
-          for (const fid of uploadedFileIds) {
-            try { await filesApi.permanentDelete(tripId, fid) } catch {}
-          }
-          throw err
-        }
-      }
+      setUploadingReceipt(pendingReceiptFiles.length > 0)
+      await saveWithReceipts(tripId, pendingReceiptFiles, editing ? editing.id : null, ids => (
+        editing
+          ? updateBudgetItem(tripId, editing.id, { ...data, receipt_file_ids: [...receipts.map(r => r.id), ...ids] })
+          : addBudgetItem(tripId, { ...data, receipt_file_ids: ids })
+      ))
+      setPendingReceiptFiles([])
       onSaved()
-    } catch {
-      toast.error(t('common.unknownError'))
+    } catch (err) {
+      const stuck = (err as { stuckReceiptIds?: number[] })?.stuckReceiptIds
+      toast.error(stuck?.length ? t('costs.receiptLeftBehind', { count: stuck.length }) : t('common.unknownError'))
       setSaving(false)
+    } finally {
+      setUploadingReceipt(false)
     }
   }
 

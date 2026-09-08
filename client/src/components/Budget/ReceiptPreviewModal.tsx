@@ -45,12 +45,23 @@ export function ReceiptPreviewModal({ receipts, initialIndex = 0, onClose }: Rec
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') {
+        // The preview opens on top of the expense form, and both the desktop
+        // Modal and the phone MSheet close themselves on Escape from a listener
+        // on `document`. Without this the one keypress closed the form too and
+        // threw away whatever the user had typed into it.
+        e.preventDefault()
+        e.stopPropagation()
+        onClose()
+        return
+      }
       if (e.key === 'ArrowLeft' && index > 0) setIndex(i => i - 1)
       if (e.key === 'ArrowRight' && index < receipts.length - 1) setIndex(i => i + 1)
     }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
+    // Capture phase, so this runs before the listeners the parents put on
+    // `document`; stopPropagation on the bubble phase would be too late.
+    window.addEventListener('keydown', handleKey, true)
+    return () => window.removeEventListener('keydown', handleKey, true)
   }, [index, receipts.length, onClose])
 
   if (!current) return null
@@ -371,7 +382,7 @@ export function ReceiptPreviewModal({ receipts, initialIndex = 0, onClose }: Rec
               <button
                 type="button"
                 onClick={handleDownload}
-                className="bg-primary text-white"
+                className="bg-accent text-accent-text"
                 style={{
                   padding: '9px 18px',
                   borderRadius: 10,

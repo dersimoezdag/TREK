@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Ekli fiş yok',
   'costs.deleteReceipt': 'Fişi kaldır',
   'costs.viewReceipt': 'Fişi görüntüle',
+  'costs.receiptLeftBehind': 'Kaydetme başarısız oldu ve yüklenen {count} fiş hâlâ duruyor. Dosyalar sekmesinden silin.',
 };
 export default budget;

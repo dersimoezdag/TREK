@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': '첨부된 영수증 없음',
   'costs.deleteReceipt': '영수증 삭제',
   'costs.viewReceipt': '영수증 보기',
+  'costs.receiptLeftBehind': '저장에 실패했고 업로드된 영수증 {count}개가 남아 있습니다. 파일 탭에서 삭제하세요.',
 };
 export default budget;

@@ -7,7 +7,8 @@ import { useSettingsStore } from '../../store/settingsStore'
 import { useCanDo } from '../../store/permissionsStore'
 import { useToast } from '../shared/Toast'
 import { useTranslation } from '../../i18n'
-import { budgetApi, filesApi } from '../../api/client'
+import { budgetApi } from '../../api/client'
+import { saveWithReceipts } from './receiptUploads'
 import { useExchangeRates } from '../../hooks/useExchangeRates'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { formatMoney, currencyDecimals, currencyLocale, localizeAmountInput, amountToInputString } from '../../utils/formatters'
@@ -1372,57 +1373,23 @@ export function ExpenseModal({ tripId, base, people, me, editing, prefill, onClo
       ...(!editing && prefill?.placeId ? { place_id: prefill.placeId } : {}),
     }
     try {
-      // Upload any pending receipt files
-      const uploadedFileIds: number[] = []
-      try {
-        for (const f of pendingReceiptFiles) {
-          const fd = new FormData()
-          fd.append('file', f)
-          if (editing) {
-            fd.append('budget_item_id', String(editing.id))
-          }
-          const res = await filesApi.upload(tripId, fd)
-          if (res?.file?.id) {
-            uploadedFileIds.push(res.file.id)
-          }
-        }
-      } catch (err) {
-        for (const fid of uploadedFileIds) {
-          try { await filesApi.permanentDelete(tripId, fid) } catch {}
-        }
-        throw err
-      }
-
-      let createdOrUpdated: BudgetItem
-      if (editing) {
-        try {
-          createdOrUpdated = await updateBudgetItem(tripId, editing.id, {
-            ...data,
-            receipt_file_ids: [...receipts.map(r => r.id), ...uploadedFileIds],
-          })
-        } catch (err) {
-          for (const fid of uploadedFileIds) {
-            try { await filesApi.permanentDelete(tripId, fid) } catch {}
-          }
-          throw err
-        }
-      } else {
-        try {
-          createdOrUpdated = await addBudgetItem(tripId, {
-            ...data,
-            receipt_file_ids: uploadedFileIds,
-          })
-        } catch (err) {
-          for (const fid of uploadedFileIds) {
-            try { await filesApi.permanentDelete(tripId, fid) } catch {}
-          }
-          throw err
-        }
-      }
+      setUploadingReceipt(pendingReceiptFiles.length > 0)
+      await saveWithReceipts(tripId, pendingReceiptFiles, editing ? editing.id : null, ids => (
+        editing
+          ? updateBudgetItem(tripId, editing.id, { ...data, receipt_file_ids: [...receipts.map(r => r.id), ...ids] })
+          : addBudgetItem(tripId, { ...data, receipt_file_ids: ids })
+      ))
+      // Only cleared once the save went through, so a retry after a failure
+      // does not upload a second copy of every file.
+      setPendingReceiptFiles([])
       onSaved()
-    } catch {
-      toast.error(t('common.unknownError'))
+    } catch (err) {
+      // A receipt the rollback could not remove is still on the trip, and the
+      // user is the only one who can clear it out of the Files tab.
+      const stuck = (err as { stuckReceiptIds?: number[] })?.stuckReceiptIds
+      toast.error(stuck?.length ? t('costs.receiptLeftBehind', { count: stuck.length }) : t('common.unknownError'))
     } finally {
+      setUploadingReceipt(false)
       setSaving(false)
     }
   }

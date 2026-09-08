@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Aucun reçu joint',
   'costs.deleteReceipt': 'Supprimer le reçu',
   'costs.viewReceipt': 'Voir le reçu',
+  'costs.receiptLeftBehind': 'Échec de la sauvegarde, {count} reçus téléversés sont toujours là. Supprimez-les dans les Fichiers.',
 };
 export default budget;

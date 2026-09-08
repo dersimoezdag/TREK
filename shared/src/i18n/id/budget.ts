@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'Tidak ada kuitansi terlampir',
   'costs.deleteReceipt': 'Hapus kuitansi',
   'costs.viewReceipt': 'Lihat kuitansi',
+  'costs.receiptLeftBehind': 'Gagal menyimpan, dan {count} struk yang diunggah masih ada. Hapus di tab Berkas.',
 };
 export default budget;

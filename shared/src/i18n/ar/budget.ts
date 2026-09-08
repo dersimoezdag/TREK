@@ -153,5 +153,6 @@ const budget: TranslationStrings = {
   'costs.noReceipts': 'لا توجد إيصالات مرفقة',
   'costs.deleteReceipt': 'حذف الإيصال',
   'costs.viewReceipt': 'عرض الإيصال',
+  'costs.receiptLeftBehind': 'فشل الحفظ، وما زال هناك {count} إيصالات مرفوعة. احذفها من تبويب الملفات.',
 };
 export default budget;
