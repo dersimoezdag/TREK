@@ -2,10 +2,11 @@ import type { StoreApi } from 'zustand'
 import type { TrekWsTripEventName } from '@trek/shared'
 import type { TripStoreState } from '../tripStore'
 import type { Assignment, Place, Day, DayNote, PackingItem, TodoItem, ShoppingItem, BudgetItem, BudgetItemMember, Reservation, Trip, TripFile, WebSocketEvent } from '../../types'
-import { offlineDb } from '../../db/offlineDb'
+import { offlineDb, unlinkCachedShoppingFromBudget } from '../../db/offlineDb'
 import { useAuthStore } from '../authStore'
 import { mergeAssignmentPlace } from './placesSlice'
 import { withoutDay } from './daysSlice'
+import { unlinkShoppingFromBudget } from './shoppingSlice'
 
 type SetState = StoreApi<TripStoreState>['setState']
 type GetState = StoreApi<TripStoreState>['getState']
@@ -146,6 +147,7 @@ export const DEXIE_WRITERS: Partial<Record<TrekWsTripEventName, DexieWriter>> = 
   'budget:updated': putBudgetItem,
   'budget:deleted': async payload => {
     await offlineDb.budgetItems.delete(payload.itemId as number)
+    await unlinkCachedShoppingFromBudget(payload.itemId as number)
   },
   'budget:members-updated': putCanonicalBudgetItem,
   'budget:member-paid-updated': putCanonicalBudgetItem,
@@ -431,6 +433,7 @@ export const STATE_APPLIERS: Partial<Record<TrekWsTripEventName, StateApplier>> 
   }),
   'budget:deleted': (payload, state) => ({
     budgetItems: state.budgetItems.filter(i => i.id !== payload.itemId),
+    shoppingItems: unlinkShoppingFromBudget(state.shoppingItems, payload.itemId as number),
   }),
   'budget:members-updated': (payload, state) => ({
     budgetItems: state.budgetItems.map(i =>

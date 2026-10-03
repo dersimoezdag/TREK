@@ -18,6 +18,16 @@ export interface ShoppingSlice {
   reorderShoppingItems: (tripId: number | string, orderedIds: number[]) => Promise<void>
 }
 
+/**
+ * Mirrors the server's ON DELETE SET NULL on shopping_items.budget_item_id: once an
+ * expense is deleted, the items it booked are open for booking again.
+ */
+export function unlinkShoppingFromBudget(items: ShoppingItem[], budgetItemId: number): ShoppingItem[] {
+  return items.some(i => i.budget_item_id === budgetItemId)
+    ? items.map(i => (i.budget_item_id === budgetItemId ? { ...i, budget_item_id: null } : i))
+    : items
+}
+
 export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice => ({
   addShoppingItem: async (tripId, data) => {
     try {

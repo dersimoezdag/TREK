@@ -332,6 +332,11 @@ export async function upsertShoppingItems(items: ShoppingItem[]): Promise<void> 
   await offlineDb.shoppingItems.bulkPut(items);
 }
 
+/** Mirrors the server's ON DELETE SET NULL: a deleted expense no longer books any cached shopping item. */
+export async function unlinkCachedShoppingFromBudget(budgetItemId: number): Promise<void> {
+  await offlineDb.shoppingItems.filter(i => i.budget_item_id === budgetItemId).modify({ budget_item_id: null });
+}
+
 export async function upsertBudgetItems(items: BudgetItem[]): Promise<void> {
   await offlineDb.budgetItems.bulkPut(items);
 }
