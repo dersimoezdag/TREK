@@ -227,8 +227,12 @@ export function useShoppingList(
       toast.error(t('shopping.totalSpent'));
       return;
     }
-    const unbookedDone = items.filter(i => !!i.checked && !i.budget_item_id);
-    const targetItems = unbookedDone.length > 0 ? unbookedDone : items.filter(i => !!i.checked);
+    // Only items not yet booked: an item already linked to an expense must never be booked twice.
+    const targetItems = items.filter(i => !!i.checked && !i.budget_item_id);
+    if (targetItems.length === 0) {
+      setBudgetModalOpen(false);
+      return;
+    }
     const itemNames = targetItems.map(i => i.name + (i.quantity ? ` (${i.quantity})` : '')).join(', ');
     const expenseTitle = itemNames ? `${t('todo.subtab.shopping')}: ${itemNames}`.slice(0, 80) : t('todo.subtab.shopping');
 

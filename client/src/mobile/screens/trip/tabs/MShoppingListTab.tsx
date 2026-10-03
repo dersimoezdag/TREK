@@ -20,6 +20,7 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
     grouped,
     totalCount,
     doneCount,
+    unbookedDoneCount,
     newItemName,
     setNewItemName,
     newItemQty,
@@ -73,6 +74,7 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
           </span>
           {doneCount > 0 && (
             <div className="ml-auto flex items-center gap-1.5">
+              {unbookedDoneCount > 0 && (
               <button
                 type="button"
                 onClick={handleOpenBudgetModal}
@@ -82,6 +84,7 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
                 <Receipt size={12} strokeWidth={2.4} />
                 <span className="hidden xs:inline">{t('shopping.addToBudget')}</span>
               </button>
+              )}
               <button
                 type="button"
                 onClick={handleClearChecked}

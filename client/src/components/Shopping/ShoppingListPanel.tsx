@@ -23,6 +23,7 @@ export default function ShoppingListPanel({
     grouped,
     totalCount,
     doneCount,
+    unbookedDoneCount,
     newItemName,
     setNewItemName,
     newItemQty,
@@ -159,6 +160,7 @@ export default function ShoppingListPanel({
           <div className="flex items-center gap-2">
             {doneCount > 0 && (
               <>
+                {unbookedDoneCount > 0 && (
                 <button
                   type="button"
                   onClick={handleOpenBudgetModal}
@@ -167,6 +169,7 @@ export default function ShoppingListPanel({
                   <Receipt size={14} />
                   <span>{t('shopping.addToBudget')}</span>
                 </button>
+                )}
                 <button
                   type="button"
                   onClick={handleClearChecked}

@@ -194,4 +194,35 @@ describe('ShoppingListPanel', () => {
     await screen.findByRole('button', { name: 'Keep expense & reopen item' });
     expect(screen.queryByRole('button', { name: 'Delete expense & reopen item' })).not.toBeInTheDocument();
   });
+  it('hides the expense button once every bought item is already booked', () => {
+    const items = [
+      shoppingItem({ id: 1, name: 'Charcoal', checked: 1, budget_item_id: 9 }),
+      shoppingItem({ id: 2, name: 'Bread', checked: 0 }),
+    ];
+    render(<ShoppingListPanel tripId={1} items={items} />);
+    expect(screen.queryByRole('button', { name: /Add as expense to budget/i })).not.toBeInTheDocument();
+  });
+
+  it('books only the bought items that are not linked to an expense yet', async () => {
+    const addBudgetItemSpy = vi.fn().mockResolvedValue({ id: 50 });
+    const updateSpy = vi.fn().mockResolvedValue({});
+    seedStore(useTripStore, {
+      trip: { id: 1, user_id: ME, currency: 'EUR' } as never,
+      addBudgetItem: addBudgetItemSpy,
+      updateShoppingItem: updateSpy,
+    });
+    const items = [
+      shoppingItem({ id: 1, name: 'Charcoal', checked: 1, budget_item_id: 9 }),
+      shoppingItem({ id: 2, name: 'Bread', checked: 1 }),
+    ];
+    render(<ShoppingListPanel tripId={1} items={items} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Add as expense to budget/i }));
+    fireEvent.change(screen.getByPlaceholderText('0.00'), { target: { value: '3.50' } });
+    fireEvent.click(screen.getByRole('button', { name: /Save|Speichern/i }));
+
+    await waitFor(() => expect(updateSpy).toHaveBeenCalledWith(1, 2, { budget_item_id: 50 }));
+    expect(updateSpy).toHaveBeenCalledTimes(1);
+    expect(addBudgetItemSpy).toHaveBeenCalledWith(1, expect.objectContaining({ name: expect.not.stringContaining('Charcoal') }));
+  });
 });

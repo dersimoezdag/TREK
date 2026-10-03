@@ -27,6 +27,11 @@ export class ShoppingService {
     this.realtime.broadcast(tripId, event, payload, socketId);
   }
 
+  /** A shopping item may only point at an expense of its own trip. */
+  budgetItemBelongsToTrip(tripId: string | number, budgetItemId: number): boolean {
+    return !!this.db.get('SELECT id FROM budget_items WHERE id = ? AND trip_id = ?', budgetItemId, tripId);
+  }
+
   listItems(tripId: string | number) {
     return this.db.all(
       'SELECT * FROM shopping_items WHERE trip_id = ? ORDER BY sort_order ASC, created_at ASC',

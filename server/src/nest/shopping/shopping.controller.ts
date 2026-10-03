@@ -75,7 +75,10 @@ export class ShoppingController {
     @Body() body: ShoppingUpdateItemDto,
     @Headers('x-socket-id') socketId?: string,
   ) {
-    const { name, checked, quantity, category, assigned_user_id, notes } = body;
+    const { name, checked, quantity, category, assigned_user_id, notes, budget_item_id } = body;
+    if (budget_item_id != null && !this.shopping.budgetItemBelongsToTrip(tripId, budget_item_id)) {
+      throw new HttpException({ error: 'Budget item not found' }, 400);
+    }
     const updated = this.shopping.updateItem(
       tripId,
       id,
@@ -86,6 +89,7 @@ export class ShoppingController {
         category,
         assigned_user_id,
         notes,
+        budget_item_id,
       },
       Object.keys(body),
     );

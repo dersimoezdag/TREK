@@ -34,11 +34,13 @@ vi.mock('../../../src/websocket', () => ({ broadcast: vi.fn() }));
 import { createTables } from '../../../src/db/schema';
 import { runMigrations } from '../../../src/db/migrations';
 import { resetTestDb } from '../../helpers/test-db';
-import { createUser, createTrip, addTripMember } from '../../helpers/factories';
+import { createUser, createTrip, addTripMember, createBudgetItem } from '../../helpers/factories';
 import { DatabaseService } from '../../../src/nest/database/database.service';
 import { PermissionsService } from '../../../src/nest/permissions/permissions.service';
 import { ShoppingService } from '../../../src/nest/shopping/shopping.service';
 import { RealtimeService } from '../../../src/nest/realtime/realtime.service';
+import { ShoppingController } from '../../../src/nest/shopping/shopping.controller';
+import type { User } from '../../../src/types';
 
 const svc = new ShoppingService(new DatabaseService(testDb), new PermissionsService(new DatabaseService(testDb)), new RealtimeService());
 
@@ -146,5 +148,51 @@ describe('ShoppingService', () => {
     expect(svc.verifyTripAccess(trip.id, owner.id)).toBeDefined();
     expect(svc.verifyTripAccess(trip.id, member.id)).toBeDefined();
     expect(svc.verifyTripAccess(trip.id, stranger.id)).toBeFalsy();
+  });
+  it('SHOP-SVC-007: budgetItemBelongsToTrip only accepts an expense of the same trip', () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id);
+    const otherTrip = createTrip(testDb, user.id);
+    const expense = createBudgetItem(testDb, trip.id);
+
+    expect(svc.budgetItemBelongsToTrip(trip.id, expense.id)).toBe(true);
+    expect(svc.budgetItemBelongsToTrip(otherTrip.id, expense.id)).toBe(false);
+    expect(svc.budgetItemBelongsToTrip(trip.id, 99999)).toBe(false);
+  });
+});
+
+describe('ShoppingController — expense link', () => {
+  const ctrl = new ShoppingController(svc);
+  const actor = {} as User;
+
+  it('SHOP-CTRL-001: PUT keeps the budget_item_id it is given, so a booked item stays booked', () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id);
+    const expense = createBudgetItem(testDb, trip.id);
+    const item = svc.createItem(trip.id, { name: 'Milk' }) as { id: number };
+
+    const { item: linked } = ctrl.update(actor, String(trip.id), String(item.id), { budget_item_id: expense.id }) as { item: { budget_item_id: number | null } };
+    expect(linked.budget_item_id).toBe(expense.id);
+
+    // A plain toggle leaves the link alone.
+    const { item: toggled } = ctrl.update(actor, String(trip.id), String(item.id), { checked: true }) as { item: { budget_item_id: number | null } };
+    expect(toggled.budget_item_id).toBe(expense.id);
+
+    // Unchecking with an explicit null clears it.
+    const { item: unlinked } = ctrl.update(actor, String(trip.id), String(item.id), { checked: false, budget_item_id: null }) as { item: { budget_item_id: number | null } };
+    expect(unlinked.budget_item_id).toBeNull();
+  });
+
+  it('SHOP-CTRL-002: PUT refuses an expense of another trip with 400 and leaves the item unchanged', () => {
+    const { user } = createUser(testDb);
+    const trip = createTrip(testDb, user.id);
+    const otherTrip = createTrip(testDb, user.id);
+    const foreign = createBudgetItem(testDb, otherTrip.id);
+    const item = svc.createItem(trip.id, { name: 'Milk' }) as { id: number };
+
+    expect(() => ctrl.update(actor, String(trip.id), String(item.id), { budget_item_id: foreign.id }))
+      .toThrow(expect.objectContaining({ status: 400 }));
+    const row = testDb.prepare('SELECT budget_item_id FROM shopping_items WHERE id = ?').get(item.id) as { budget_item_id: number | null };
+    expect(row.budget_item_id).toBeNull();
   });
 });
