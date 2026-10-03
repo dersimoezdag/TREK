@@ -47,6 +47,10 @@ export default function ShoppingListPanel({
     isSubmittingBudget,
     handleOpenBudgetModal,
     handleConfirmBudgetTransfer,
+    uncheckPrompt,
+    handleConfirmUncheckKeepExpense,
+    handleConfirmUncheckDeleteExpense,
+    handleCancelUncheck,
   } = useShoppingList(tripId, items, tripMembers);
 
   const currencySymbol = trip?.currency || '€';
@@ -236,6 +240,15 @@ export default function ShoppingListPanel({
                               {item.quantity}
                             </span>
                           )}
+                          {item.budget_item_id && (
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] bg-emerald-500/10 text-emerald-600 font-semibold"
+                              title={t('shopping.inBudget')}
+                            >
+                              <Receipt size={11} />
+                              {t('shopping.inBudget')}
+                            </span>
+                          )}
                         </div>
 
                         {canEdit && (
@@ -257,6 +270,48 @@ export default function ShoppingListPanel({
           })
         )}
       </div>
+
+      {/* ── Uncheck linked expense prompt ── */}
+      {uncheckPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-2xl bg-surface-card border border-edge p-6 shadow-xl space-y-4">
+            <h3 className="text-base font-bold text-content flex items-center gap-2">
+              <Receipt size={18} className="text-accent" />
+              <span>{t('shopping.uncheckLinkedTitle')}</span>
+            </h3>
+            <p className="text-sm text-content-muted">
+              {uncheckPrompt.otherItemsCount > 0
+                ? t('shopping.uncheckLinkedMultipleDesc', { name: uncheckPrompt.linkedExpense.name, count: uncheckPrompt.otherItemsCount })
+                : t('shopping.uncheckLinkedDesc', { name: uncheckPrompt.linkedExpense.name })}
+            </p>
+            <div className="flex flex-col gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handleConfirmUncheckKeepExpense}
+                className="w-full px-4 py-2 rounded-xl bg-accent text-accent-text text-sm font-semibold hover:opacity-90 cursor-pointer"
+              >
+                {t('shopping.uncheckKeepExpense')}
+              </button>
+              {uncheckPrompt.otherItemsCount === 0 && (
+                <button
+                  type="button"
+                  onClick={handleConfirmUncheckDeleteExpense}
+                  className="w-full px-4 py-2 rounded-xl border border-edge text-red-500 text-sm font-semibold hover:bg-surface-secondary cursor-pointer"
+                >
+                  {t('shopping.uncheckDeleteExpense')}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleCancelUncheck}
+                className="w-full px-4 py-2 rounded-xl text-sm font-medium text-content-muted hover:bg-surface-secondary cursor-pointer"
+              >
+                {t('common.cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Budget Transfer Modal ── */}
       {budgetModalOpen && (

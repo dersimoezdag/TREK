@@ -602,7 +602,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'Addons',
   'admin.addons.subtitle': 'Aktiviere oder deaktiviere Funktionen, um TREK nach deinen Wünschen anzupassen.',
   'admin.addons.catalog.packing.name': 'Listen',
-  'admin.addons.catalog.packing.description': 'Packlisten und To-Do-Aufgaben für deine Reisen',
+  'admin.addons.catalog.packing.description': 'Packlisten, Einkaufslisten und To-Do-Aufgaben für deine Reisen',
   'admin.addons.catalog.budget.name': 'Kosten',
   'admin.addons.catalog.budget.description': 'Reisekosten erfassen und unter den Mitreisenden aufteilen',
   'admin.addons.catalog.documents.name': 'Dokumente',

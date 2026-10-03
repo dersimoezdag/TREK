@@ -602,7 +602,7 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': '用於 AI 助手整合的模型上下文協議',
   'admin.addons.catalog.packing.name': '行李',
-  'admin.addons.catalog.packing.description': '每次旅行的行李準備清單',
+  'admin.addons.catalog.packing.description': '旅行的行李準備清單、購物清單與待辦事項',
   'admin.addons.catalog.budget.name': '費用',
   'admin.addons.catalog.budget.description': '記錄行程開銷並在同行者之間分攤',
   'admin.addons.catalog.documents.name': '文件',

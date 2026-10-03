@@ -42,10 +42,10 @@ const oauth: TranslationStrings = {
     'Ölkələri və regionları ziyarət edilmiş kimi işarələmək və arzular siyahısını idarə etmək',
   'oauth.scope.packing:read.label': 'Baqaj siyahılarına bax',
   'oauth.scope.packing:read.description':
-    'Baqaj elementlərini, çantaları və kateqoriyalara təyin edilmiş şəxsləri oxumaq',
+    'Baqaj elementlərini, çantaları, kateqoriyalara təyin edilmiş şəxsləri və alış-veriş siyahısı elementlərini oxumaq',
   'oauth.scope.packing:write.label': 'Baqaj siyahılarını idarə et',
   'oauth.scope.packing:write.description':
-    'Baqaj elementlərini və çantaları əlavə etmək, yeniləmək, silmək, vəziyyətini dəyişmək və yenidən sıralamaq',
+    'Baqaj elementlərini, çantaları və alış-veriş siyahısı elementlərini əlavə etmək, yeniləmək, silmək, vəziyyətini dəyişmək və yenidən sıralamaq',
   'oauth.scope.todos:read.label': 'Tapşırıq siyahılarına bax',
   'oauth.scope.todos:read.description': 'Səyahət tapşırıqlarını və kateqoriyalara təyin edilmiş şəxsləri oxumaq',
   'oauth.scope.todos:write.label': 'Tapşırıq siyahılarını idarə et',

@@ -36,6 +36,7 @@ export function useShoppingList(
     reorderShoppingItems,
     addBudgetItem,
     deleteBudgetItem,
+    loadBudgetItems,
     budgetItems,
   } = useTripStore();
 
@@ -114,6 +115,15 @@ export function useShoppingList(
   };
 
   const unbookedDoneCount = useMemo(() => items.filter(i => !!i.checked && !i.budget_item_id).length, [items]);
+
+  // Linked expenses must be known to show the badge/prompt even if Costs was never opened.
+  const hasLinkedItems = items.some(i => !!i.budget_item_id);
+  useEffect(() => {
+    if (hasLinkedItems && budgetItems.length === 0) {
+      void Promise.resolve(loadBudgetItems(tripId)).catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasLinkedItems, tripId]);
 
   const handleToggle = async (id: number, checked: boolean) => {
     const item = items.find(i => i.id === id);

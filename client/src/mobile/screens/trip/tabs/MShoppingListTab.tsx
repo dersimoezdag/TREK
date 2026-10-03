@@ -44,6 +44,10 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
     isSubmittingBudget,
     handleOpenBudgetModal,
     handleConfirmBudgetTransfer,
+    uncheckPrompt,
+    handleConfirmUncheckKeepExpense,
+    handleConfirmUncheckDeleteExpense,
+    handleCancelUncheck,
   } = useShoppingList(tripId, items || [], tripMembers)
 
   const currencySymbol = trip?.currency || '€'
@@ -253,6 +257,16 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
                         </span>
                       )}
 
+                      {item.budget_item_id && (
+                        <span
+                          className="flex flex-none items-center gap-1 rounded-lg bg-emerald-500/10 px-1.5 py-0.5 font-geist text-[0.625rem] font-bold text-emerald-600"
+                          title={t('shopping.inBudget')}
+                        >
+                          <Receipt size={10} strokeWidth={2.6} />
+                          {t('shopping.inBudget')}
+                        </span>
+                      )}
+
                       {canEdit && (
                         <button
                           type="button"
@@ -271,6 +285,40 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
           })
         )}
       </div>
+
+      {/* ── Uncheck linked expense sheet ── */}
+      <MSheet open={!!uncheckPrompt} onClose={handleCancelUncheck}>
+        <FormSheetHeader
+          title={t('shopping.uncheckLinkedTitle')}
+          onClose={handleCancelUncheck}
+          closeLabel={t('common.cancel')}
+        />
+        {uncheckPrompt && (
+          <div className="space-y-3 px-4 py-3 pb-6">
+            <p className="text-sm text-m-muted">
+              {uncheckPrompt.otherItemsCount > 0
+                ? t('shopping.uncheckLinkedMultipleDesc', { name: uncheckPrompt.linkedExpense.name, count: uncheckPrompt.otherItemsCount })
+                : t('shopping.uncheckLinkedDesc', { name: uncheckPrompt.linkedExpense.name })}
+            </p>
+            <button
+              type="button"
+              onClick={handleConfirmUncheckKeepExpense}
+              className="w-full rounded-full bg-m-act px-4 py-3 text-sm font-semibold text-m-actfg"
+            >
+              {t('shopping.uncheckKeepExpense')}
+            </button>
+            {uncheckPrompt.otherItemsCount === 0 && (
+              <button
+                type="button"
+                onClick={handleConfirmUncheckDeleteExpense}
+                className="w-full rounded-full border border-[color:var(--m-rowbr)] px-4 py-3 text-sm font-semibold text-red-500"
+              >
+                {t('shopping.uncheckDeleteExpense')}
+              </button>
+            )}
+          </div>
+        )}
+      </MSheet>
 
       {/* ── Budget Transfer Sheet ── */}
       <MSheet open={budgetModalOpen} onClose={() => setBudgetModalOpen(false)}>

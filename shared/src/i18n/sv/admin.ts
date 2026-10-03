@@ -670,7 +670,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'Tillägg',
   'admin.addons.subtitle': 'Aktivera eller inaktivera funktioner för att anpassa din TREK-upplevelse.',
   'admin.addons.catalog.packing.name': 'Listor',
-  'admin.addons.catalog.packing.description': 'Packlistor och saker att göra inför dina resor',
+  'admin.addons.catalog.packing.description': 'Packlistor, inköpslistor och saker att göra inför dina resor',
   'admin.addons.catalog.budget.name': 'Kostnader',
   'admin.addons.catalog.budget.description': 'Håll koll på resans utgifter och dela dem mellan resenärerna',
   'admin.addons.catalog.documents.name': 'Dokument',

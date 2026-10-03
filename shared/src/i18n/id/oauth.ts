@@ -38,9 +38,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Kelola Atlas',
   'oauth.scope.atlas:write.description': 'Tandai negara dan wilayah yang dikunjungi, kelola daftar impian',
   'oauth.scope.packing:read.label': 'Lihat daftar perlengkapan',
-  'oauth.scope.packing:read.description': 'Baca barang perlengkapan, tas, dan penugasan kategori',
+  'oauth.scope.packing:read.description': 'Baca barang perlengkapan, tas, penugasan kategori, dan item daftar belanja',
   'oauth.scope.packing:write.label': 'Kelola daftar perlengkapan',
-  'oauth.scope.packing:write.description': 'Tambah, perbarui, hapus, centang, dan urutkan barang dan tas',
+  'oauth.scope.packing:write.description':
+    'Tambah, perbarui, hapus, centang, dan urutkan barang, tas, dan item daftar belanja',
   'oauth.scope.todos:read.label': 'Lihat daftar to-do',
   'oauth.scope.todos:read.description': 'Baca item to-do perjalanan dan penugasan kategori',
   'oauth.scope.todos:write.label': 'Kelola daftar to-do',

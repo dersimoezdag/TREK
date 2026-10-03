@@ -661,7 +661,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'Doplnky',
   'admin.addons.subtitle': 'Zapnite alebo vypnite funkcie a prispôsobte si zážitok z TREKu.',
   'admin.addons.catalog.packing.name': 'Zoznamy',
-  'admin.addons.catalog.packing.description': 'Baliace zoznamy a úlohy pre vaše cesty',
+  'admin.addons.catalog.packing.description': 'Baliace zoznamy, nákupné zoznamy a úlohy pre vaše cesty',
   'admin.addons.catalog.budget.name': 'Náklady',
   'admin.addons.catalog.budget.description': 'Sledujte výdavky na cestu a rozdeľte ich medzi cestujúcich',
   'admin.addons.catalog.documents.name': 'Dokumenty',

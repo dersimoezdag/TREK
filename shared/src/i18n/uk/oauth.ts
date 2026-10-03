@@ -38,9 +38,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Керування Atlas',
   'oauth.scope.atlas:write.description': 'Позначення відвіданих країн і регіонів, керування списком бажань',
   'oauth.scope.packing:read.label': 'Перегляд списків речей',
-  'oauth.scope.packing:read.description': 'Читання речей, сумок і призначень категорій',
+  'oauth.scope.packing:read.description': 'Читання речей, сумок, призначень категорій і позицій списку покупок',
   'oauth.scope.packing:write.label': 'Керування списками речей',
-  'oauth.scope.packing:write.description': 'Додавання, оновлення, видалення, позначення і переставлення речей та сумок',
+  'oauth.scope.packing:write.description':
+    'Додавання, оновлення, видалення, позначення і переставлення речей, сумок та позицій списку покупок',
   'oauth.scope.todos:read.label': 'Перегляд списків задач',
   'oauth.scope.todos:read.description': 'Читання задач поїздки і призначень категорій',
   'oauth.scope.todos:write.label': 'Керування списками задач',

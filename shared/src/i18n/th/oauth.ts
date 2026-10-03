@@ -38,9 +38,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'จัดการแอตลาส',
   'oauth.scope.atlas:write.description': 'ทำเครื่องหมายประเทศและภูมิภาคที่เยี่ยมชม จัดการรายการสิ่งที่อยากทำ',
   'oauth.scope.packing:read.label': 'ดูรายการบรรจุ',
-  'oauth.scope.packing:read.description': 'อ่านรายการบรรจุกระเป๋าและผู้รับมอบหมายหมวดหมู่',
+  'oauth.scope.packing:read.description': 'อ่านรายการบรรจุกระเป๋า ผู้รับมอบหมายหมวดหมู่ และรายการในรายการซื้อของ',
   'oauth.scope.packing:write.label': 'จัดการรายการจัดกระเป๋า',
-  'oauth.scope.packing:write.description': 'เพิ่ม อัปเดต ลบ ทำเครื่องหมาย และเรียงลำดับรายการจัดกระเป๋าและกระเป๋า',
+  'oauth.scope.packing:write.description':
+    'เพิ่ม อัปเดต ลบ ทำเครื่องหมาย และเรียงลำดับรายการจัดกระเป๋า กระเป๋า และรายการในรายการซื้อของ',
   'oauth.scope.todos:read.label': 'ดูรายการสิ่งที่ต้องทำ',
   'oauth.scope.todos:read.description': 'อ่านรายการสิ่งที่ต้องทำในการเดินทางและผู้ได้รับมอบหมายหมวดหมู่',
   'oauth.scope.todos:write.label': 'จัดการรายการสิ่งที่ต้องทำ',

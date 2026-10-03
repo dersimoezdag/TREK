@@ -38,10 +38,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Hantera Atlas',
   'oauth.scope.atlas:write.description': 'Markera besökta länder och regioner, hantera bucketlist',
   'oauth.scope.packing:read.label': 'Visa packlistor',
-  'oauth.scope.packing:read.description': 'Läs om packningsföremål, väskor och kategoritilldelningar',
+  'oauth.scope.packing:read.description':
+    'Läs om packningsföremål, väskor, kategoritilldelningar och poster på inköpslistan',
   'oauth.scope.packing:write.label': 'Hantera packlistor',
   'oauth.scope.packing:write.description':
-    'Lägg till, uppdatera, ta bort, växla mellan och ordna om packningsföremål och väskor',
+    'Lägg till, uppdatera, ta bort, växla mellan och ordna om packningsföremål, väskor och poster på inköpslistan',
   'oauth.scope.todos:read.label': 'Visa uppgiftslistor',
   'oauth.scope.todos:read.description':
     'Läs uppgifter som ska göras under resan och vilka som är ansvariga för respektive kategori',

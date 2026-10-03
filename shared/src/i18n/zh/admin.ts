@@ -552,7 +552,7 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': '用于 AI 助手集成的模型上下文协议',
   'admin.addons.catalog.packing.name': '列表',
-  'admin.addons.catalog.packing.description': '行程打包清单与待办任务',
+  'admin.addons.catalog.packing.description': '行程打包清单、购物清单与待办任务',
   'admin.addons.catalog.budget.name': '费用',
   'admin.addons.catalog.budget.description': '记录行程开销并在同行者之间分摊',
   'admin.addons.catalog.documents.name': '文档',

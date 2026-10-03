@@ -605,7 +605,7 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': 'Model Context Protocol voor AI-assistent integratie',
   'admin.addons.catalog.packing.name': 'Lijsten',
-  'admin.addons.catalog.packing.description': 'Paklijsten en to-dotaken voor je reizen',
+  'admin.addons.catalog.packing.description': 'Paklijsten, boodschappenlijsten en to-dotaken voor je reizen',
   'admin.addons.catalog.budget.name': 'Onkosten',
   'admin.addons.catalog.budget.description': 'Houd reiskosten bij en verdeel ze onder de reisgenoten',
   'admin.addons.catalog.documents.name': 'Documenten',

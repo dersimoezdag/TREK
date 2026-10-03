@@ -622,7 +622,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'アドオン',
   'admin.addons.subtitle': '機能を有効／無効にしてTREKをカスタマイズします。',
   'admin.addons.catalog.packing.name': 'リスト',
-  'admin.addons.catalog.packing.description': '旅行用の持ち物リストとToDo',
+  'admin.addons.catalog.packing.description': '旅行用の持ち物リスト、買い物リスト、ToDo',
   'admin.addons.catalog.budget.name': '費用',
   'admin.addons.catalog.budget.description': '旅行の支出を記録し、同行者と分担',
   'admin.addons.catalog.documents.name': 'ドキュメント',

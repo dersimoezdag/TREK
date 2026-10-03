@@ -38,10 +38,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Atlas beheren',
   'oauth.scope.atlas:write.description': "Landen en regio's markeren als bezocht, bucketlist beheren",
   'oauth.scope.packing:read.label': 'Paklijsten bekijken',
-  'oauth.scope.packing:read.description': 'Pakartikelen, tassen en categorietoewijzingen lezen',
+  'oauth.scope.packing:read.description':
+    'Pakartikelen, tassen, categorietoewijzingen en items op de boodschappenlijst lezen',
   'oauth.scope.packing:write.label': 'Paklijsten beheren',
   'oauth.scope.packing:write.description':
-    'Pakartikelen en tassen toevoegen, bijwerken, verwijderen, omschakelen en herordenen',
+    'Pakartikelen, tassen en items op de boodschappenlijst toevoegen, bijwerken, verwijderen, omschakelen en herordenen',
   'oauth.scope.todos:read.label': 'Takenlijsten bekijken',
   'oauth.scope.todos:read.description': 'Reistaakitems en categorietoewijzingen lezen',
   'oauth.scope.todos:write.label': 'Takenlijsten beheren',

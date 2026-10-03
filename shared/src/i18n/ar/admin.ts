@@ -608,7 +608,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'الإضافات',
   'admin.addons.subtitle': 'فعّل أو عطّل الميزات لتخصيص تجربة TREK.',
   'admin.addons.catalog.packing.name': 'القوائم',
-  'admin.addons.catalog.packing.description': 'قوائم التعبئة والمهام لرحلاتك',
+  'admin.addons.catalog.packing.description': 'قوائم التعبئة وقوائم التسوق والمهام لرحلاتك',
   'admin.addons.catalog.budget.name': 'التكاليف',
   'admin.addons.catalog.budget.description': 'تتبّع مصاريف الرحلة وقسّمها بين المسافرين',
   'admin.addons.catalog.documents.name': 'المستندات',

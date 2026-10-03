@@ -621,7 +621,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': '애드온',
   'admin.addons.subtitle': '기능을 활성화 또는 비활성화하여 TREK 경험을 맞춤 설정하세요.',
   'admin.addons.catalog.packing.name': '목록',
-  'admin.addons.catalog.packing.description': '여행을 위한 짐 목록 및 할 일 작업',
+  'admin.addons.catalog.packing.description': '여행을 위한 짐 목록, 쇼핑 목록 및 할 일 작업',
   'admin.addons.catalog.budget.name': '비용',
   'admin.addons.catalog.budget.description': '여행 지출을 기록하고 동행자끼리 나누기',
   'admin.addons.catalog.documents.name': '문서',

@@ -655,7 +655,8 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'Eklentiler',
   'admin.addons.subtitle': 'TREK deneyiminizi özelleştirmek için özellikleri etkinleştirin veya devre dışı bırakın.',
   'admin.addons.catalog.packing.name': 'Listeler',
-  'admin.addons.catalog.packing.description': 'Seyahatleriniz için paket listeleri ve yapılacak işler',
+  'admin.addons.catalog.packing.description':
+    'Seyahatleriniz için paket listeleri, alışveriş listeleri ve yapılacak işler',
   'admin.addons.catalog.budget.name': 'Maliyetler',
   'admin.addons.catalog.budget.description': 'Gezi masraflarını takip edin ve yolcular arasında paylaştırın',
   'admin.addons.catalog.documents.name': 'Belgeler',

@@ -38,10 +38,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Quản lý bản đồ',
   'oauth.scope.atlas:write.description': 'Đánh dấu các quốc gia và khu vực đã ghé thăm, quản lý danh sách nhóm',
   'oauth.scope.packing:read.label': 'Xem danh sách đóng gói',
-  'oauth.scope.packing:read.description': 'Đọc các mặt hàng đóng gói, túi xách và người được giao danh mục',
+  'oauth.scope.packing:read.description':
+    'Đọc các mặt hàng đóng gói, túi xách, người được giao danh mục và mục trong danh sách mua sắm',
   'oauth.scope.packing:write.label': 'Quản lý danh sách đóng gói',
   'oauth.scope.packing:write.description':
-    'Thêm, cập nhật, xóa, chuyển đổi và sắp xếp lại các mặt hàng và túi đóng gói',
+    'Thêm, cập nhật, xóa, chuyển đổi và sắp xếp lại các mặt hàng, túi đóng gói và mục trong danh sách mua sắm',
   'oauth.scope.todos:read.label': 'Xem danh sách việc cần làm',
   'oauth.scope.todos:read.description': 'Đọc các mục việc cần làm trong chuyến đi và người được giao danh mục',
   'oauth.scope.todos:write.label': 'Quản lý danh sách việc cần làm',

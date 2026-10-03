@@ -606,7 +606,7 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': 'Протокол контекста модели для интеграции с ИИ-ассистентами',
   'admin.addons.catalog.packing.name': 'Списки',
-  'admin.addons.catalog.packing.description': 'Списки вещей и задачи для ваших поездок',
+  'admin.addons.catalog.packing.description': 'Списки вещей, списки покупок и задачи для ваших поездок',
   'admin.addons.catalog.budget.name': 'Расходы',
   'admin.addons.catalog.budget.description': 'Учитывайте расходы на поездку и делите их между участниками',
   'admin.addons.catalog.documents.name': 'Документы',

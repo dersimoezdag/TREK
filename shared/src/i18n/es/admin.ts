@@ -725,7 +725,8 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': 'Protocolo de contexto de modelo para integración con asistentes de IA',
   'admin.addons.catalog.packing.name': 'Listas',
-  'admin.addons.catalog.packing.description': 'Listas de equipaje y tareas pendientes para tus viajes',
+  'admin.addons.catalog.packing.description':
+    'Listas de equipaje, listas de la compra y tareas pendientes para tus viajes',
   'admin.addons.catalog.budget.name': 'Costes',
   'admin.addons.catalog.budget.description': 'Controla los gastos del viaje y repártelos entre los viajeros',
   'admin.addons.catalog.documents.name': 'Documentos',

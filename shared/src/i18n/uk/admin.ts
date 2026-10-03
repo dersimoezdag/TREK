@@ -603,7 +603,7 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': 'Протокол контексту моделі для інтеграції з ІІ-асистентами',
   'admin.addons.catalog.packing.name': 'Списки',
-  'admin.addons.catalog.packing.description': 'Списки речей та завдання для ваших подорожей',
+  'admin.addons.catalog.packing.description': 'Списки речей, списки покупок та завдання для ваших подорожей',
   'admin.addons.catalog.budget.name': 'Витрати',
   'admin.addons.catalog.budget.description': 'Стежте за витратами на подорож і діліть їх між учасниками',
   'admin.addons.catalog.documents.name': 'Документи',

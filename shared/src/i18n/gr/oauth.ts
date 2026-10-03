@@ -39,10 +39,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Διαχείριση Atlas',
   'oauth.scope.atlas:write.description': 'Σήμανση χωρών και περιοχών ως επισκεφθεισών, διαχείριση λίστας επιθυμιών',
   'oauth.scope.packing:read.label': 'Προβολή λιστών αποσκευών',
-  'oauth.scope.packing:read.description': 'Ανάγνωση αντικειμένων αποσκευών, τσαντών και αναθέσεων κατηγοριών',
+  'oauth.scope.packing:read.description':
+    'Ανάγνωση αντικειμένων αποσκευών, τσαντών, αναθέσεων κατηγοριών και ειδών της λίστας αγορών',
   'oauth.scope.packing:write.label': 'Διαχείριση λιστών αποσκευών',
   'oauth.scope.packing:write.description':
-    'Προσθήκη, ενημέρωση, διαγραφή, εναλλαγή και αναδιάταξη αντικειμένων και τσαντών',
+    'Προσθήκη, ενημέρωση, διαγραφή, εναλλαγή και αναδιάταξη αντικειμένων, τσαντών και ειδών της λίστας αγορών',
   'oauth.scope.todos:read.label': 'Προβολή λιστών εργασιών',
   'oauth.scope.todos:read.description': 'Ανάγνωση εργασιών ταξιδιού και αναθέσεων κατηγοριών',
   'oauth.scope.todos:write.label': 'Διαχείριση λιστών εργασιών',

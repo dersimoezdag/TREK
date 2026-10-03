@@ -38,9 +38,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': "Gestiona l'Atles",
   'oauth.scope.atlas:write.description': 'Marca països i regions com a visitats, gestiona la llista de desitjos',
   'oauth.scope.packing:read.label': "Mostra les llistes d'equipatge",
-  'oauth.scope.packing:read.description': 'Llegeix articles, maletes i responsables de categoria',
+  'oauth.scope.packing:read.description':
+    'Llegeix articles, maletes, responsables de categoria i articles de la llista de la compra',
   'oauth.scope.packing:write.label': "Gestiona les llistes d'equipatge",
-  'oauth.scope.packing:write.description': 'Afegeix, actualitza, elimina, marca i reordena articles i maletes',
+  'oauth.scope.packing:write.description':
+    'Afegeix, actualitza, elimina, marca i reordena articles, maletes i articles de la llista de la compra',
   'oauth.scope.todos:read.label': 'Mostra les llistes de tasques',
   'oauth.scope.todos:read.description': 'Llegeix tasques del viatge i responsables de categoria',
   'oauth.scope.todos:write.label': 'Gestiona les llistes de tasques',

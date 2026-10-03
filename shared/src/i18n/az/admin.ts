@@ -685,7 +685,8 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'Əlavələr',
   'admin.addons.subtitle': 'TREK təcrübənizi fərdiləşdirmək üçün funksiyaları aktivləşdirin və ya deaktiv edin.',
   'admin.addons.catalog.packing.name': 'Siyahılar',
-  'admin.addons.catalog.packing.description': 'Səyahətləriniz üçün baqaj siyahıları və tapşırıqlar',
+  'admin.addons.catalog.packing.description':
+    'Səyahətləriniz üçün baqaj siyahıları, alış-veriş siyahıları və tapşırıqlar',
   'admin.addons.catalog.budget.name': 'Xərclər',
   'admin.addons.catalog.budget.description': 'Səyahət xərclərini izləyin və onları səyahətçilər arasında bölüşdürün',
   'admin.addons.catalog.documents.name': 'Sənədlər',

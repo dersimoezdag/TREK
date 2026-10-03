@@ -35,9 +35,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'إدارة Atlas',
   'oauth.scope.atlas:write.description': 'تعليم الدول والمناطق كمزارة، وإدارة قائمة الأمنيات',
   'oauth.scope.packing:read.label': 'عرض قوائم الأمتعة',
-  'oauth.scope.packing:read.description': 'قراءة عناصر الأمتعة والحقائب ومُسنَدي الفئات',
+  'oauth.scope.packing:read.description': 'قراءة عناصر الأمتعة والحقائب ومُسنَدي الفئات وعناصر قائمة التسوق',
   'oauth.scope.packing:write.label': 'إدارة قوائم الأمتعة',
-  'oauth.scope.packing:write.description': 'إضافة وتحديث وحذف وتبديل وإعادة ترتيب عناصر الأمتعة والحقائب',
+  'oauth.scope.packing:write.description':
+    'إضافة وتحديث وحذف وتبديل وإعادة ترتيب عناصر الأمتعة والحقائب وعناصر قائمة التسوق',
   'oauth.scope.todos:read.label': 'عرض قوائم المهام',
   'oauth.scope.todos:read.description': 'قراءة مهام الرحلة ومُسنَدي الفئات',
   'oauth.scope.todos:write.label': 'إدارة قوائم المهام',

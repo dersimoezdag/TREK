@@ -666,7 +666,7 @@ const admin: TranslationStrings = {
   'admin.addons.title': 'Lisamoodulid',
   'admin.addons.subtitle': 'Luba või keela funktsioone, et kohandada TREKi enda jaoks.',
   'admin.addons.catalog.packing.name': 'Nimekirjad',
-  'admin.addons.catalog.packing.description': 'Reiside pakkimisnimekirjad ja ülesanded',
+  'admin.addons.catalog.packing.description': 'Reiside pakkimisnimekirjad, ostunimekirjad ja ülesanded',
   'admin.addons.catalog.budget.name': 'Kulud',
   'admin.addons.catalog.budget.description': 'Jälgi reisikulusid ja jaga neid reisijate vahel',
   'admin.addons.catalog.documents.name': 'Dokumendid',

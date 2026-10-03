@@ -38,9 +38,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Manage Atlas',
   'oauth.scope.atlas:write.description': 'Mark countries and regions visited, manage bucket list',
   'oauth.scope.packing:read.label': 'View packing lists',
-  'oauth.scope.packing:read.description': 'Read packing items, bags, and category assignees',
+  'oauth.scope.packing:read.description': 'Read packing items, bags, category assignees, and shopping list items',
   'oauth.scope.packing:write.label': 'Manage packing lists',
-  'oauth.scope.packing:write.description': 'Add, update, delete, toggle, and reorder packing items and bags',
+  'oauth.scope.packing:write.description':
+    'Add, update, delete, toggle, and reorder packing items, bags, and shopping list items',
   'oauth.scope.todos:read.label': 'View to-do lists',
   'oauth.scope.todos:read.description': 'Read trip to-do items and category assignees',
   'oauth.scope.todos:write.label': 'Manage to-do lists',

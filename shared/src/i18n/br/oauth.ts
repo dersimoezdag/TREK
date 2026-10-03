@@ -38,9 +38,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Gerenciar Atlas',
   'oauth.scope.atlas:write.description': 'Marcar países e regiões como visitados, gerenciar lista de desejos',
   'oauth.scope.packing:read.label': 'Ver listas de bagagem',
-  'oauth.scope.packing:read.description': 'Ler itens, malas e responsáveis por categoria',
+  'oauth.scope.packing:read.description': 'Ler itens, malas, responsáveis por categoria e itens da lista de compras',
   'oauth.scope.packing:write.label': 'Gerenciar listas de bagagem',
-  'oauth.scope.packing:write.description': 'Adicionar, atualizar, excluir, marcar e reordenar itens e malas',
+  'oauth.scope.packing:write.description':
+    'Adicionar, atualizar, excluir, marcar e reordenar itens, malas e itens da lista de compras',
   'oauth.scope.todos:read.label': 'Ver listas de tarefas',
   'oauth.scope.todos:read.description': 'Ler tarefas da viagem e responsáveis por categoria',
   'oauth.scope.todos:write.label': 'Gerenciar listas de tarefas',

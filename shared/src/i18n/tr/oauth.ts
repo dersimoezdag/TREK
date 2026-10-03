@@ -40,10 +40,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.description':
     'Ülke ve bölgeleri ziyaret edildi olarak işaretle, yapılacaklar listesini yönet',
   'oauth.scope.packing:read.label': 'Paket listelerini görüntüle',
-  'oauth.scope.packing:read.description': 'Paket öğelerini, çantaları ve kategori atamalarını oku',
+  'oauth.scope.packing:read.description':
+    'Paket öğelerini, çantaları, kategori atamalarını ve alışveriş listesi öğelerini oku',
   'oauth.scope.packing:write.label': 'Paket listelerini yönet',
   'oauth.scope.packing:write.description':
-    'Paket öğelerini ve çantaları ekle, güncelle, sil, işaretle ve yeniden sırala',
+    'Paket öğelerini, çantaları ve alışveriş listesi öğelerini ekle, güncelle, sil, işaretle ve yeniden sırala',
   'oauth.scope.todos:read.label': 'Yapılacak listelerini görüntüle',
   'oauth.scope.todos:read.description': 'Seyahat yapılacak öğelerini ve kategori atamalarını oku',
   'oauth.scope.todos:write.label': 'Yapılacak listelerini yönet',

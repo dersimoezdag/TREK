@@ -346,7 +346,8 @@ const admin: TranslationStrings = {
   'admin.addons.catalog.mcp.name': 'MCP',
   'admin.addons.catalog.mcp.description': "Protocol de context de model per a integració amb assistents d'IA",
   'admin.addons.catalog.packing.name': 'Llistes',
-  'admin.addons.catalog.packing.description': "Llistes d'equipatge i tasques pendents per als teus viatges",
+  'admin.addons.catalog.packing.description':
+    "Llistes d'equipatge, llistes de la compra i tasques pendents per als teus viatges",
   'admin.addons.catalog.budget.name': 'Pressupost',
   'admin.addons.catalog.budget.description': 'Controla les despeses del viatge i reparteix-les entre els viatgers',
   'admin.addons.catalog.documents.name': 'Documents',

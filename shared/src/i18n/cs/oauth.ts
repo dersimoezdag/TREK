@@ -37,9 +37,10 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Spravovat Atlas',
   'oauth.scope.atlas:write.description': 'Označovat navštívené země a regiony, spravovat seznam přání',
   'oauth.scope.packing:read.label': 'Zobrazit seznamy balení',
-  'oauth.scope.packing:read.description': 'Číst položky, tašky a přiřazení kategorií',
+  'oauth.scope.packing:read.description': 'Číst položky, tašky, přiřazení kategorií a položky nákupního seznamu',
   'oauth.scope.packing:write.label': 'Spravovat seznamy balení',
-  'oauth.scope.packing:write.description': 'Přidávat, aktualizovat, mazat, označovat a řadit položky a tašky',
+  'oauth.scope.packing:write.description':
+    'Přidávat, aktualizovat, mazat, označovat a řadit položky, tašky a položky nákupního seznamu',
   'oauth.scope.todos:read.label': 'Zobrazit seznamy úkolů',
   'oauth.scope.todos:read.description': 'Číst úkoly výletu a přiřazení kategorií',
   'oauth.scope.todos:write.label': 'Spravovat seznamy úkolů',

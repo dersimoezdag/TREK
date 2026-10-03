@@ -152,4 +152,46 @@ describe('ShoppingListPanel', () => {
       }),
     );
   });
+  it('shows an "In budget" badge for items linked to an expense', () => {
+    const items = [shoppingItem({ id: 1, name: 'Charcoal', checked: 1, budget_item_id: 9 })];
+    render(<ShoppingListPanel tripId={1} items={items} />);
+    expect(screen.getByText('In budget')).toBeInTheDocument();
+  });
+
+  it('asks before reopening an item linked to an expense and keeps the expense on request', async () => {
+    const updateSpy = vi.fn().mockResolvedValue({});
+    const deleteSpy = vi.fn().mockResolvedValue(undefined);
+    seedStore(useTripStore, {
+      trip: { id: 1, user_id: ME, currency: 'EUR' } as never,
+      budgetItems: [{ id: 9, trip_id: 1, name: 'Shopping: Charcoal', total_price: 50 }] as never,
+      updateShoppingItem: updateSpy,
+      deleteBudgetItem: deleteSpy,
+    });
+    const items = [shoppingItem({ id: 1, name: 'Charcoal', checked: 1, budget_item_id: 9 })];
+    render(<ShoppingListPanel tripId={1} items={items} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Charcoal/ }));
+    const keep = await screen.findByRole('button', { name: 'Keep expense & reopen item' });
+    expect(screen.getByRole('button', { name: 'Delete expense & reopen item' })).toBeInTheDocument();
+    fireEvent.click(keep);
+
+    await waitFor(() => expect(updateSpy).toHaveBeenCalledWith(1, 1, { checked: 0, budget_item_id: null }));
+    expect(deleteSpy).not.toHaveBeenCalled();
+  });
+
+  it('offers no delete option when the receipt covers other items', async () => {
+    seedStore(useTripStore, {
+      trip: { id: 1, user_id: ME, currency: 'EUR' } as never,
+      budgetItems: [{ id: 9, trip_id: 1, name: 'Shopping: Charcoal, Bread', total_price: 50 }] as never,
+    });
+    const items = [
+      shoppingItem({ id: 1, name: 'Charcoal', checked: 1, budget_item_id: 9 }),
+      shoppingItem({ id: 2, name: 'Bread', checked: 1, budget_item_id: 9 }),
+    ];
+    render(<ShoppingListPanel tripId={1} items={items} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Charcoal/ }));
+    await screen.findByRole('button', { name: 'Keep expense & reopen item' });
+    expect(screen.queryByRole('button', { name: 'Delete expense & reopen item' })).not.toBeInTheDocument();
+  });
 });

@@ -38,10 +38,11 @@ const oauth: TranslationStrings = {
   'oauth.scope.atlas:write.label': 'Atlas kezelése',
   'oauth.scope.atlas:write.description': 'Országok és régiók meglátogatottként jelölése, bakancslisták kezelése',
   'oauth.scope.packing:read.label': 'Csomaglisták megtekintése',
-  'oauth.scope.packing:read.description': 'Csomagolási tételek, táskák és kategória-hozzárendelések olvasása',
+  'oauth.scope.packing:read.description':
+    'Csomagolási tételek, táskák, kategória-hozzárendelések és bevásárlólista-tételek olvasása',
   'oauth.scope.packing:write.label': 'Csomaglisták kezelése',
   'oauth.scope.packing:write.description':
-    'Csomagolási tételek és táskák hozzáadása, frissítése, törlése, jelölése és átrendezése',
+    'Csomagolási tételek, táskák és bevásárlólista-tételek hozzáadása, frissítése, törlése, jelölése és átrendezése',
   'oauth.scope.todos:read.label': 'Feladatlisták megtekintése',
   'oauth.scope.todos:read.description': 'Utazás feladatai és kategória-hozzárendelések olvasása',
   'oauth.scope.todos:write.label': 'Feladatlisták kezelése',
