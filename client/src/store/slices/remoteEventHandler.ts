@@ -1,7 +1,7 @@
 import type { StoreApi } from 'zustand'
 import type { TrekWsTripEventName } from '@trek/shared'
 import type { TripStoreState } from '../tripStore'
-import type { Assignment, Place, Day, DayNote, PackingItem, TodoItem, BudgetItem, BudgetItemMember, Reservation, Trip, TripFile, WebSocketEvent } from '../../types'
+import type { Assignment, Place, Day, DayNote, PackingItem, TodoItem, ShoppingItem, BudgetItem, BudgetItemMember, Reservation, Trip, TripFile, WebSocketEvent } from '../../types'
 import { offlineDb } from '../../db/offlineDb'
 import { useAuthStore } from '../authStore'
 import { mergeAssignmentPlace } from './placesSlice'
@@ -57,6 +57,9 @@ const putPackingItem: DexieWriter = async payload => {
 }
 const putTodoItem: DexieWriter = async payload => {
   await offlineDb.todoItems.put(payload.item as TodoItem)
+}
+const putShoppingItem: DexieWriter = async payload => {
+  await offlineDb.shoppingItems.put(payload.item as ShoppingItem)
 }
 const putBudgetItem: DexieWriter = async payload => {
   await offlineDb.budgetItems.put(payload.item as BudgetItem)
@@ -129,6 +132,13 @@ export const DEXIE_WRITERS: Partial<Record<TrekWsTripEventName, DexieWriter>> = 
   'todo:updated': putTodoItem,
   'todo:deleted': async payload => {
     await offlineDb.todoItems.delete(payload.itemId as number)
+  },
+
+  // ── Shopping ─────────────────────────────────────────────────────────────
+  'shopping:created': putShoppingItem,
+  'shopping:updated': putShoppingItem,
+  'shopping:deleted': async payload => {
+    await offlineDb.shoppingItems.delete(payload.itemId as number)
   },
 
   // ── Budget ───────────────────────────────────────────────────────────────
@@ -397,6 +407,18 @@ export const STATE_APPLIERS: Partial<Record<TrekWsTripEventName, StateApplier>> 
   }),
   'todo:deleted': (payload, state) => ({
     todoItems: state.todoItems.filter(i => i.id !== payload.itemId),
+  }),
+
+  // Shopping
+  'shopping:created': (payload, state) => {
+    if (state.shoppingItems.some(i => i.id === (payload.item as ShoppingItem).id)) return {}
+    return { shoppingItems: [...state.shoppingItems, payload.item as ShoppingItem] }
+  },
+  'shopping:updated': (payload, state) => ({
+    shoppingItems: state.shoppingItems.map(i => i.id === (payload.item as ShoppingItem).id ? payload.item as ShoppingItem : i),
+  }),
+  'shopping:deleted': (payload, state) => ({
+    shoppingItems: state.shoppingItems.filter(i => i.id !== payload.itemId),
   }),
 
   // Budget
