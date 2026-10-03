@@ -17,6 +17,8 @@ export default function ShoppingListPanel({
   const {
     t,
     canEdit,
+    canEditBudget,
+    canTransferToBudget,
     trip,
     filter,
     setFilter,
@@ -160,7 +162,7 @@ export default function ShoppingListPanel({
           <div className="flex items-center gap-2">
             {doneCount > 0 && (
               <>
-                {unbookedDoneCount > 0 && (
+                {canTransferToBudget && unbookedDoneCount > 0 && (
                 <button
                   type="button"
                   onClick={handleOpenBudgetModal}
@@ -295,7 +297,7 @@ export default function ShoppingListPanel({
               >
                 {t('shopping.uncheckKeepExpense')}
               </button>
-              {uncheckPrompt.otherItemsCount === 0 && (
+              {canEditBudget && uncheckPrompt.otherItemsCount === 0 && (
                 <button
                   type="button"
                   onClick={handleConfirmUncheckDeleteExpense}

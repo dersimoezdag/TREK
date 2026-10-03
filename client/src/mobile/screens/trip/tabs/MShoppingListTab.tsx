@@ -14,6 +14,8 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
   const {
     t,
     canEdit,
+    canEditBudget,
+    canTransferToBudget,
     trip,
     filter,
     setFilter,
@@ -72,9 +74,9 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
           <span className="font-geist text-[0.625rem] font-bold text-m-faint">
             {pct}% · {t('todo.completed')}
           </span>
-          {doneCount > 0 && (
+          {canEdit && doneCount > 0 && (
             <div className="ml-auto flex items-center gap-1.5">
-              {unbookedDoneCount > 0 && (
+              {canTransferToBudget && unbookedDoneCount > 0 && (
               <button
                 type="button"
                 onClick={handleOpenBudgetModal}
@@ -233,6 +235,7 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
                     >
                       <button
                         type="button"
+                        disabled={!canEdit}
                         onClick={() => handleToggle(item.id, !item.checked)}
                         className={`flex h-6 w-6 flex-none items-center justify-center rounded-lg border transition-all ${
                           item.checked
@@ -310,7 +313,7 @@ export default function MShoppingListTab({ planner }: { planner: TripPlanner }) 
             >
               {t('shopping.uncheckKeepExpense')}
             </button>
-            {uncheckPrompt.otherItemsCount === 0 && (
+            {canEditBudget && uncheckPrompt.otherItemsCount === 0 && (
               <button
                 type="button"
                 onClick={handleConfirmUncheckDeleteExpense}

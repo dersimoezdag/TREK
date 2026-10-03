@@ -1,4 +1,5 @@
 import { shoppingApi } from '../../api/client'
+import { offlineDb } from '../../db/offlineDb'
 import type { StoreApi } from 'zustand'
 import type { TripStoreState } from '../tripStore'
 import type { ShoppingItem } from '../../types'
@@ -28,11 +29,21 @@ export function unlinkShoppingFromBudget(items: ShoppingItem[], budgetItemId: nu
     : items
 }
 
+// Cache failures must not roll back a write that the server already accepted.
+async function persistShoppingCache(write: () => Promise<unknown>): Promise<void> {
+  try {
+    await write()
+  } catch (err) {
+    console.error('Failed to update shopping cache:', err)
+  }
+}
+
 export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice => ({
   addShoppingItem: async (tripId, data) => {
     try {
       const result = await shoppingApi.create(tripId, data)
       set(state => ({ shoppingItems: [...state.shoppingItems, result.item] }))
+      await persistShoppingCache(() => offlineDb.shoppingItems.put(result.item))
       return result.item
     } catch (err: unknown) {
       throw new Error(getApiErrorMessage(err, 'Error adding shopping item'))
@@ -45,6 +56,7 @@ export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice
       set(state => ({
         shoppingItems: state.shoppingItems.map(item => item.id === id ? result.item : item),
       }))
+      await persistShoppingCache(() => offlineDb.shoppingItems.put(result.item))
       return result.item
     } catch (err: unknown) {
       throw new Error(getApiErrorMessage(err, 'Error updating shopping item'))
@@ -56,6 +68,7 @@ export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice
     set(state => ({ shoppingItems: state.shoppingItems.filter(item => item.id !== id) }))
     try {
       await shoppingApi.delete(tripId, id)
+      await persistShoppingCache(() => offlineDb.shoppingItems.delete(id))
     } catch (err: unknown) {
       set({ shoppingItems: prev })
       throw new Error(getApiErrorMessage(err, 'Error deleting shopping item'))
@@ -69,7 +82,8 @@ export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice
       ),
     }))
     try {
-      await shoppingApi.update(tripId, id, { checked })
+      const result = await shoppingApi.update(tripId, id, { checked })
+      await persistShoppingCache(() => offlineDb.shoppingItems.put(result.item))
     } catch (err: unknown) {
       set(state => ({
         shoppingItems: state.shoppingItems.map(item =>
@@ -84,10 +98,11 @@ export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice
     const prev = get().shoppingItems
     set(state => ({ shoppingItems: state.shoppingItems.filter(item => !item.checked) }))
     try {
-      await shoppingApi.clearChecked(tripId)
+      const result = await shoppingApi.clearChecked(tripId)
+      await persistShoppingCache(() => offlineDb.shoppingItems.bulkDelete(result.deletedIds))
     } catch (err: unknown) {
       set({ shoppingItems: prev })
-      notify(getApiErrorMessage(err, 'Error clearing completed items'), 'error')
+      throw new Error(getApiErrorMessage(err, 'Error clearing completed items'))
     }
   },
 
@@ -102,8 +117,10 @@ export const createShoppingSlice = (set: SetState, get: GetState): ShoppingSlice
       const remaining = state.shoppingItems.filter(i => !orderedIds.includes(i.id))
       return { shoppingItems: [...reordered, ...remaining] }
     })
+    const reorderedItems = get().shoppingItems.filter(item => item.trip_id === Number(tripId))
     try {
       await shoppingApi.reorder(tripId, orderedIds)
+      await persistShoppingCache(() => offlineDb.shoppingItems.bulkPut(reorderedItems))
     } catch (err: unknown) {
       set({ shoppingItems: prev })
       notify(getApiErrorMessage(err, 'Error reordering shopping items'), 'error')

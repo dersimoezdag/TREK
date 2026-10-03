@@ -44,6 +44,8 @@ export function useShoppingList(
   const me = useAuthStore(s => s.user?.id);
   const can = useCanDo();
   const canEdit = can('packing_edit', trip);
+  const canEditBudget = can('budget_edit', trip);
+  const canTransferToBudget = canEdit && canEditBudget;
   const toast = useToast();
   const { t } = useTranslation();
 
@@ -98,6 +100,7 @@ export function useShoppingList(
   const grouped = useMemo(() => groupShoppingItems(filtered), [filtered]);
 
   const handleAddItem = async () => {
+    if (!canEdit) return;
     const trimmed = newItemName.trim();
     if (!trimmed) return;
     try {
@@ -126,6 +129,7 @@ export function useShoppingList(
   }, [hasLinkedItems, tripId]);
 
   const handleToggle = async (id: number, checked: boolean) => {
+    if (!canEdit) return;
     const item = items.find(i => i.id === id);
     if (!checked && item?.budget_item_id) {
       const linkedExpense = budgetItems.find(b => b.id === item.budget_item_id);
@@ -147,6 +151,7 @@ export function useShoppingList(
   };
 
   const handleConfirmUncheckKeepExpense = async () => {
+    if (!canEdit) return;
     if (!uncheckPrompt) return;
     const { item } = uncheckPrompt;
     setUncheckPrompt(null);
@@ -158,6 +163,7 @@ export function useShoppingList(
   };
 
   const handleConfirmUncheckDeleteExpense = async () => {
+    if (!canTransferToBudget) return;
     if (!uncheckPrompt) return;
     const { item, linkedExpense } = uncheckPrompt;
     setUncheckPrompt(null);
@@ -178,6 +184,7 @@ export function useShoppingList(
   };
 
   const handleDelete = async (id: number) => {
+    if (!canEdit) return;
     try {
       await deleteShoppingItem(tripId, id);
     } catch (err: unknown) {
@@ -186,6 +193,7 @@ export function useShoppingList(
   };
 
   const handleClearChecked = async () => {
+    if (!canEdit) return;
     if (doneCount === 0) return;
     try {
       await clearCheckedShoppingItems(tripId);
@@ -196,6 +204,7 @@ export function useShoppingList(
   };
 
   const handleReorder = async (orderedIds: number[]) => {
+    if (!canEdit) return;
     try {
       await reorderShoppingItems(tripId, orderedIds);
     } catch {
@@ -204,6 +213,7 @@ export function useShoppingList(
   };
 
   const handleOpenBudgetModal = () => {
+    if (!canTransferToBudget) return;
     setBudgetAmount('');
     setBudgetDate(localToday());
     const defaultParticipants = members.length > 0
@@ -222,6 +232,7 @@ export function useShoppingList(
   };
 
   const handleConfirmBudgetTransfer = async () => {
+    if (!canTransferToBudget) return;
     const num = parseFloat(budgetAmount.replace(',', '.'));
     if (isNaN(num) || num <= 0) {
       toast.error(t('shopping.totalSpent'));
@@ -274,6 +285,8 @@ export function useShoppingList(
   return {
     t,
     canEdit,
+    canEditBudget,
+    canTransferToBudget,
     trip,
     filter,
     setFilter,
